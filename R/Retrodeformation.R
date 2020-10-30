@@ -1,6 +1,6 @@
 #### 0. Libraries ####
 
-setwd("~/Documents/GITHUB_repos/retrodeformation")
+setwd("~/Documents/GITHUB_repos/Oculudentavis_retrodeformation")
 
 library(geomorph)
 library(Morpho)
@@ -19,16 +19,35 @@ mesh_bird <- file2mesh("data/bird_lowRes.ply")
 str(mesh_bird)
 
 
-#### 1.2. Plot landmarks and mesh ####
+#### 1.1. Plot all landmarks and mesh ####
 open3d(windowRect = c(20, 30, 800, 800))
 shade3d(mesh_bird, color="gray", alpha=0.9)
 plot3d(lm_bird, aspect="iso", type="s", size=0.3, col="blue", add=T)
-plot3d(lm_bird[470:478,], aspect="iso", type="s", size=0.3, col="blue", add=T)
-plot3d(lm_bird[479:487,], aspect="iso", type="s", size=0.3, col="green", add=T)
-plot3d(lm_bird[956:964,], aspect="iso", type="s", size=0.3, col="red", add=T)
-plot3d(lm_bird[965:973,], aspect="iso", type="s", size=0.3, col="yellow", add=T)
+# plot3d(lm_bird[470:478,], aspect="iso", type="s", size=0.3, col="blue", add=T)
+# plot3d(lm_bird[479:487,], aspect="iso", type="s", size=0.3, col="green", add=T)
+# plot3d(lm_bird[956:964,], aspect="iso", type="s", size=0.3, col="red", add=T)
+# plot3d(lm_bird[965:973,], aspect="iso", type="s", size=0.3, col="yellow", add=T)
 rgl.close()
 
+
+#### 1.2. Plot only LMs used in retrodeformation ####
+NUM_premaxilla_LEFT <- c(470:550)
+NUM_premaxilla_RIGHT <- c(551:631)
+NUM_maxilla_LEFT <- c(956:1036)
+NUM_maxilla_RIGHT <- c(1037:1117)
+NUM_nasal_LEFT <- c(632:712)
+NUM_nasal_RIGHT <- c(713:793)
+
+lm_bird_subset <- lm_bird[c(NUM_premaxilla_LEFT, NUM_premaxilla_RIGHT, NUM_maxilla_LEFT,
+                                                         NUM_maxilla_RIGHT, NUM_nasal_LEFT, NUM_nasal_RIGHT), ]
+
+open3d(windowRect = c(20, 30, 1800, 800))
+shade3d(mesh_bird, color="gray", alpha=0.9)
+plot3d(lm_bird_subset, aspect="iso", type="s", size=0.2, col="blue", add=T)
+rgl.snapshot("figs/bird_original_LMs_RIGHT.png", top = TRUE) 
+rgl.snapshot("figs/bird_original_LMs_LEFT.png", top = TRUE) 
+rgl.snapshot("figs/bird_original_LMs_TOP.png", top = TRUE) 
+rgl.close()
 #### 2. Retrodeformation maxilla & premaxilla - ShapeRotator ####
 #### 2.1. Landmark selection, angle, translation to c(0, 0, 0) and rotation to the xz-plane ####
 # landmarks
@@ -536,6 +555,21 @@ plot3d(lm_reptile[PATCH_Supraoccipital_R, ], aspect="iso", type="s", size=0.6, c
 plot3d(lm_reptile[PATCH_Tabular_L, ], aspect="iso", type="s", size=0.6, col="blue", add=T)
 plot3d(lm_reptile[PATCH_Tabular_R, ], aspect="iso", type="s", size=0.6, col="blue", add=T)
 
+
+##### 4.3 Plot retrodeformation subset LMs on mesh ####
+
+lm_reptile_subset <- lm_reptile[c(Nasal_crest, PATCH_Nasal_L, PATCH_Nasal_R, Orbit_L, Orbit_R, 
+   Frontal_Orbit_L, Frontal_Orbit_R, Postfrontal_L, Postfrontal_R, 
+   PATCH_Supraoccipital_L, PATCH_Supraoccipital_R, Post_Parietal_L, Post_Parietal_R, Palatine_L2, Palatine_R2,
+   PATCH_Premaxilla_L, PATCH_Premaxilla_R, PATCH_Maxilla_L, PATCH_Maxilla_R, PATCH_Nasal_L, PATCH_Nasal_R), ]
+
+open3d(windowRect = c(20, 30, 1800, 800))
+shade3d(mesh_reptile, color="gray", alpha=0.9)
+plot3d(lm_reptile_subset, aspect="iso", type="s", size=0.4, col="green", add=T)
+rgl.snapshot("figs/reptile_original_LMs_RIGHT.png", top = TRUE) 
+rgl.snapshot("figs/reptile_original_LMs_LEFT.png", top = TRUE) 
+rgl.snapshot("figs/reptile_original_LMs_TOP.png", top = TRUE) 
+rgl.close()
 
 #### 5. Rotate the reptile - ShapeRotator ####
 #### 5.1. Landmark selection, angle, translation to c(0, 0, 0) and rotation to the xz-plane ####
